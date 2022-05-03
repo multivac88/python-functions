@@ -11,9 +11,9 @@ from algosdk.future.transaction import AssetConfigTxn, AssetTransferTxn, AssetFr
 from algosdk.future.transaction import *
 
 # public key of asset creator
-CREATOR = "PUH4IZLOGSTUZB3KXW7QDYQUGMNEF7A4RJGCSHRH4EHJUM7BJBMCL67LQA"
+CREATOR = "NRZE7JL5PTK7JYWWVQRXSJTBGMS6XKXWTOSQ3PCZCVFF7HMF4SBJVUAF7Y"
 # secret key of asset creator
-CREATOR_SK = "SHJxpdMgfoEFJqRjf7bYrz77IHc5Hgz0WWhn0kIqqD59D8RlbjSnTIdqvb8B4hQzGkL8HIpMKR4n4Q6aM+FIWA=="
+CREATOR_SK = "iF+xjLCY8hVPESLYT+P7x+HEgkNUlwt6FDqny5YIBoxsck+lfXzV9OLWrCN5JmEzJeuq9pulDbxZFUpfnYXkgg=="
 
 
 # user declared algod connection parameters. Node must have EnableDeveloperAPI set to true in its config
@@ -24,8 +24,8 @@ algod_token = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 algod_client = algod.AlgodClient(algod_token=algod_token, algod_address=algod_address)
 
 params = algod_client.suggested_params()
-params.fee = 10000
-application_id = 87001706
+params.fee = 1000
+application_id = 87239468
 
 
 txn = ApplicationCallTxn(
