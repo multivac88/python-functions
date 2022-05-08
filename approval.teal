@@ -1,0 +1,216 @@
+#pragma version 4
+global GroupSize
+int 1
+==
+txn ApplicationID
+int 0
+==
+&&
+txn NumAppArgs
+int 3
+==
+&&
+txna ApplicationArgs 0
+byte "vault"
+==
+&&
+bnz main_l10
+global GroupSize
+int 2
+==
+byte "gstate"
+app_global_get
+byte "init_escrow"
+==
+&&
+txn OnCompletion
+int NoOp
+==
+&&
+txn NumAppArgs
+int 2
+==
+&&
+txna ApplicationArgs 0
+byte "set_escrow"
+==
+&&
+txn Sender
+global CreatorAddress
+==
+&&
+gtxn 0 TypeEnum
+int pay
+==
+&&
+gtxn 0 Amount
+int 100000
+==
+&&
+gtxn 0 Receiver
+txna ApplicationArgs 1
+==
+&&
+gtxn 0 CloseRemainderTo
+global ZeroAddress
+==
+&&
+bnz main_l9
+global GroupSize
+int 1
+==
+byte "gstate"
+app_global_get
+byte "waiting"
+==
+&&
+txn OnCompletion
+int NoOp
+==
+&&
+txn NumAppArgs
+int 3
+==
+&&
+txna ApplicationArgs 0
+byte "withdraw"
+==
+&&
+txn Sender
+global CreatorAddress
+==
+&&
+bnz main_l8
+global GroupSize
+int 2
+==
+byte "gstate"
+app_global_get
+byte "requested"
+==
+&&
+txn OnCompletion
+int NoOp
+==
+&&
+txn NumAppArgs
+int 1
+==
+&&
+txna ApplicationArgs 0
+byte "finalize"
+==
+&&
+byte "request_time"
+app_global_get
+byte "wait_time"
+app_global_get
++
+global Round
+>=
+&&
+txn Sender
+global CreatorAddress
+==
+&&
+gtxn 0 TypeEnum
+int pay
+==
+&&
+gtxn 0 Amount
+byte "amount"
+app_global_get
+==
+&&
+gtxn 0 Sender
+byte "vault"
+app_global_get
+==
+&&
+gtxn 0 Receiver
+byte "receiver"
+app_global_get
+==
+&&
+gtxn 0 CloseRemainderTo
+global ZeroAddress
+==
+&&
+bnz main_l7
+global GroupSize
+int 1
+==
+byte "gstate"
+app_global_get
+byte "requested"
+==
+&&
+txn OnCompletion
+int NoOp
+==
+&&
+txn NumAppArgs
+int 1
+==
+&&
+txna ApplicationArgs 0
+byte "cancel"
+==
+&&
+txn Sender
+byte "recovery"
+app_global_get
+==
+&&
+bnz main_l6
+err
+main_l6:
+byte "gstate"
+byte "waiting"
+app_global_put
+int 1
+return
+main_l7:
+byte "gstate"
+byte "waiting"
+app_global_put
+int 1
+return
+main_l8:
+byte "gstate"
+byte "requested"
+app_global_put
+byte "amount"
+txna ApplicationArgs 1
+btoi
+app_global_put
+byte "receiver"
+txna ApplicationArgs 2
+app_global_put
+byte "request_time"
+global Round
+app_global_put
+int 1
+return
+main_l9:
+byte "gstate"
+byte "waiting"
+app_global_put
+byte "vault"
+txna ApplicationArgs 1
+app_global_put
+int 1
+return
+main_l10:
+byte "gstate"
+byte "init_escrow"
+app_global_put
+byte "recovery"
+txna ApplicationArgs 1
+app_global_put
+byte "wait_time"
+txna ApplicationArgs 2
+btoi
+app_global_put
+int 1
+return
